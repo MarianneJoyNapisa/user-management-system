@@ -11,18 +11,18 @@ const baseUrl = `${environment.apiUrl}/accounts`;
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-    private accountSubject: BehaviorSubject<Account>;
-    public account: Observable<Account>;
+    private accountSubject: BehaviorSubject<Account | null>;
+    public account: Observable<Account | null>;
 
     constructor(
         private router: Router,
         private http: HttpClient
     ) {
-        this.accountSubject = new BehaviorSubject<Account>(null);
+        this.accountSubject = new BehaviorSubject<Account | null>(null);
         this.account = this.accountSubject.asObservable();
     }
 
-    public get accountValue(): Account {
+    public get accountValue(): Account | null {
         return this.accountSubject.value;
     }
 
@@ -79,15 +79,15 @@ export class AccountService {
         return this.http.get<Account>(`${baseUrl}/${id}`);
     }
     
-    create(params) {
+    create(params: Partial<Account>) {
         return this.http.post(baseUrl, params);
     }
     
-    update(id, params) {
+    update(id: string, params: Partial<Account>) {
         return this.http.put(`${baseUrl}/${id}`, params)
             .pipe(map((account: any) => {
                 // update the current account if it was updated
-                if (account.id === this.accountValue.id) {
+                if (account.id === this.accountValue?.id) {
                     // publish updated account to subscribers
                     account = { ...this.accountValue, ...account };
                     this.accountSubject.next(account);
@@ -100,17 +100,18 @@ export class AccountService {
         return this.http.delete(`${baseUrl}/${id}`)
             .pipe(finalize(() => {
                 // auto logout if the logged in account was deleted
-                if (id === this.accountValue.id)
+                if (id === this.accountValue?.id)
                     this.logout();
             }));
     }
 
     // helper methods
 
-    private refreshTokenTimeout;
+    private refreshTokenTimeout: ReturnType<typeof setTimeout>;
 
     private startRefreshTokenTimer() {
         // parse json object from base64 encoded jwt token
+        if (!this.accountValue?.jwtToken) return;
         const jwtToken = JSON.parse(atob(this.accountValue.jwtToken.split('.')[1]));
 
         // set a timeout to refresh the token a minute before it expires
