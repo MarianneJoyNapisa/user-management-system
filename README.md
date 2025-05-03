@@ -6,9 +6,9 @@ Marson - frontend-profile-admin-fake-backend
 
 Rosal - frontend-signup-auth
 
-Magsayo -  backend-signup-auth
+Napisa - backend-signup-auth
 
-Napisa -  backend-authorization-crud
+Magsayo - backend-authorization-crud
 
 Marson - tester-functional-testing
 
