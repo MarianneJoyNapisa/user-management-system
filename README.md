@@ -2,13 +2,13 @@
 
 Members:
 
-Napisa - backend-signup-auth
-
-Magsayo - backend-authorization-crud
-
 Marson - frontend-profile-admin-fake-backend
 
 Rosal - frontend-signup-auth
+
+Napisa - backend-signup-auth
+
+Magsayo - backend-authorization-crud
 
 Marson - tester-functional-testing
 
