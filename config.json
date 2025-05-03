@@ -13,7 +13,7 @@
         "port": 587,
         "auth": {
             "user": "branson.king@ethereal.email",
-            "pass": "jC9tVA4SGFF1NTKhx3"
+            "pass": "jC9tVA4SGFF1NTKhx3"    
         }
     }
 }
